@@ -1,10 +1,11 @@
-# spfactor
+# regform
 
 ## Usage of spfactor
 ~~~
   -cache=false: cache start
   -db=10: max db open connections
   -finalStat=false: final stat start
+  -regform=false: reg form start
   -moHandler=false: mo handler start
   -moReceiver=false: mo receiver start
   -moRest=false: mo rest start
