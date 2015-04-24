@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title></title>
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" href="/css/bootplus.min.css">
+    <link rel="stylesheet" href="/css/bootplus-responsive.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/css/new.css">
+    <!--[if IE]>
+        <script src="https://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="brand" href="http://www.sembpc.com">“学院杯”大学生创意创业大赛</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav pull-right">
+                        <li class="">
+                            <a href="http://www.sembpc.com">网站首页</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="span3 bs-docs-sidenav">
+                <ul class="nav nav-list bs-docs-sidenav affix">
+                    <li><a href="/regform/team">团队报名表</a>
+                    </li>
+                    <li><a href="/regform/person">个人报名表</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="span9">
+                <section>
+                    <p class="page-header">“学院杯”大学生创意创业大赛个人报名表</p>
+                <label class="input-block-level">
+                    姓名
+                    <input type="text" class="input-mini" name="name" id="name"> 性别 <input type="text" class="input-mini" name="gender" id="gender">
+                </label>
+                <label class="input-block-level">
+                    出生年月
+                    <input type="text" class="input-mini" name="birth" id="birth"> 政治面貌 <input type="text" class="input-mini" name="believe" id="believe">
+                </label>
+                <label class="input-block-level">
+                    单位及职务
+                    <input type="text"  class="input-xxlarge" name="unit" id="unit">
+                </label>
+                <label class="input-block-level">
+                    手机
+                    <input type="text" class="input-small" name="mobile" id="mobile"> 电子邮箱
+                    <input type="text" class="input-medium" name="email" id="email">
+                </label>
+                <label class="input-block-level">
+                    组内职务
+                    <input type="text" class="input-small" name="positions" id="positions"> 负责方面
+                    <input type="text" class="input-small" name="director" id="director">
+                </label>                
+                <label>个人对自我创意创业小组的评价</label>
+                <textarea rows="15" class="input-xxlarge" name="evaluation" id="evaluation"></textarea>
+                <label class="input-block-level">
+                <button class="btn-large btn-primary icon-align-center" id="submit">提交</button>
+                </label>
+                </section>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">报名信息</h3>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>                
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script src="/js/personform.js"></script>
+</body>
+
+</html>
