@@ -1,6 +1,6 @@
 # regform
 
-## Usage of spfactor
+## Usage of regform
 ~~~
   -cache=false: cache start
   -db=10: max db open connections
