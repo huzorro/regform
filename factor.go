@@ -111,8 +111,8 @@ func getForm(r *http.Request, w http.ResponseWriter, log *log.Logger, db *sql.DB
 		}
 	}
         defer func() {
-                r.Body.Close()
                 stmtOut.Close()
+		rows.Close()
         }()
 	return http.StatusOK, info
 }
@@ -132,7 +132,6 @@ func deleteForm(r *http.Request, w http.ResponseWriter, log *log.Logger, db *sql
 	s = LoginStatus{200, "信息删除成功"}
 	rs, _ := json.Marshal(s)
         defer func() {
-                r.Body.Close()
 		stmtIn.Close()
         }()
 	return http.StatusOK, string(rs)
@@ -170,7 +169,6 @@ func updateForm(r *http.Request, w http.ResponseWriter, log *log.Logger, db *sql
 		s = LoginStatus{200, "信息审核成功"}
 		rs, _ := json.Marshal(s)
         defer func() {
-                r.Body.Close()
                 stmtIn.Close()
         }()
 		return http.StatusOK, string(rs)
@@ -201,7 +199,6 @@ func updateForm(r *http.Request, w http.ResponseWriter, log *log.Logger, db *sql
 		s = LoginStatus{200, "信息审核成功"}
 		rs, _ := json.Marshal(s)
         defer func() {
-                r.Body.Close()
                 stmtIn.Close()
         }()
 		return http.StatusOK, string(rs)
@@ -237,7 +234,6 @@ func updatePersonForm(r *http.Request, w http.ResponseWriter, log *log.Logger, d
 	s = LoginStatus{200, "信息审核成功"}
 	rs, _ := json.Marshal(s)
         defer func() {
-                r.Body.Close()
                 stmtIn.Close()
         }()
 	return http.StatusOK, string(rs)
@@ -272,7 +268,6 @@ func updateTeamForm(r *http.Request, w http.ResponseWriter, log *log.Logger, db 
 	s = LoginStatus{200, "信息审核成功"}
 	rs, _ := json.Marshal(s)
         defer func() {
-                r.Body.Close()
                 stmtIn.Close()
         }()
 	return http.StatusOK, string(rs)
@@ -321,10 +316,10 @@ func personFormAdmin(r *http.Request, w http.ResponseWriter, log *log.Logger, db
 	}
 
 	stmtOutT, _ := db.Prepare("SELECT id, info FROM regform_log WHERE type = ? AND status = ?")
-	rows, err = stmtOutT.Query(REG_FORM_PERSON, REG_FORM_UNPASS)
+	rowsT, _ := stmtOutT.Query(REG_FORM_PERSON, REG_FORM_UNPASS)
 
-	for rows.Next() {
-		err = rows.Scan(&id, &info)
+	for rowsT.Next() {
+		err = rowsT.Scan(&id, &info)
 		err = json.Unmarshal([]byte(info), &personForm)
 		personForm.Id = id
 		personUnpass = append(personUnpass, personForm)
@@ -344,9 +339,10 @@ func personFormAdmin(r *http.Request, w http.ResponseWriter, log *log.Logger, db
 	}{menu, personPass, personUnpass, status}
 	log.Printf("%+v", ret.PersonPass)
         defer func() {
-                r.Body.Close()
                 stmtOut.Close()
+		rows.Close()
                 stmtOutT.Close()
+		rowsT.Close()
 
         }()
 	render.HTML(200, path[index+1:], ret)
@@ -395,10 +391,10 @@ func teamFormAdmin(r *http.Request, w http.ResponseWriter, log *log.Logger, db *
 	}
 
 	stmtOutT, _ := db.Prepare("SELECT id, info FROM regform_log WHERE type = ? AND status = ?")
-	rows, err = stmtOutT.Query(REG_FORM_TEAM, REG_FORM_UNPASS)
+	rowsT, _ := stmtOutT.Query(REG_FORM_TEAM, REG_FORM_UNPASS)
 
-	for rows.Next() {
-		err = rows.Scan(&id, &info)
+	for rowsT.Next() {
+		err = rowsT.Scan(&id, &info)
 		err = json.Unmarshal([]byte(info), &teamForm)
 		teamForm.Id = id
 		teamUnpass = append(teamUnpass, teamForm)
@@ -417,9 +413,10 @@ func teamFormAdmin(r *http.Request, w http.ResponseWriter, log *log.Logger, db *
 		Status     LoginStatus
 	}{menu, teamPass, teamUnpass, status}
         defer func() {
-                r.Body.Close()
                 stmtOut.Close()
+		rows.Close()
                 stmtOutT.Close()
+		rowsT.Close()
         }()
 	render.HTML(200, path[index+1:], ret)
 }
@@ -454,7 +451,6 @@ func teamFormSubmit(r *http.Request, w http.ResponseWriter, log *log.Logger, db 
 	s = LoginStatus{200, "信息提交成功"}
 	rs, _ := json.Marshal(s)
         defer func() {
-                r.Body.Close()
                 stmtIn.Close()
         }()
 	return http.StatusOK, string(rs)
@@ -489,7 +485,6 @@ func personFormSubmit(r *http.Request, w http.ResponseWriter, log *log.Logger, d
 	s = LoginStatus{200, "信息提交成功"}
 	rs, _ := json.Marshal(s)
         defer func() {
-                r.Body.Close()
                 stmtIn.Close()
         }()
 	return http.StatusOK, string(rs)
@@ -552,11 +547,9 @@ func logout(r *http.Request, w http.ResponseWriter, log *log.Logger, session ses
 func rLogin(r *http.Request, w http.ResponseWriter, log *log.Logger, db *sql.DB, session sessions.Session) (int, string) {
 	//cross domain
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	log.Printf("abc")
 
 	un := r.PostFormValue("username")
 	pd := r.PostFormValue("password")
-	log.Printf("%s %s", un, pd)
 	var (
 		s LoginStatus
 	)
@@ -565,10 +558,6 @@ func rLogin(r *http.Request, w http.ResponseWriter, log *log.Logger, db *sql.DB,
 		"INNER JOIN sp_role b ON a.roleid = b.id " +
 		"INNER JOIN sp_access_privilege c ON a.accessid = c.id " +
 		"WHERE username = ? AND password = ? ")
-          defer func() {
-                  r.Body.Close()
-                  stmtOut.Close()
-          }()
 	if err != nil {
 		log.Printf("get login user fails %s", err)
 		s = LoginStatus{500, "内部错误导致登录失败."}
@@ -576,6 +565,10 @@ func rLogin(r *http.Request, w http.ResponseWriter, log *log.Logger, db *sql.DB,
 		return http.StatusOK, string(rs)
 	}
 	result, err := stmtOut.Query(un, pd)
+	defer func() {
+		stmtOut.Close()
+		result.Close()
+	}()
 	if err != nil {
 		log.Printf("%s", err)
 		//		http.Redirect(w, r, ERROR_PAGE_NAME, 301)

@@ -637,7 +637,6 @@ func (self *Cache) SetMo(user *SpUser) error {
 
 func (self *Cache) RbacNodeToMap() (map[string]*SpStatNode, error) {
 	stmtOut, err := self.db.Prepare("SELECT id, name, node FROM sp_node_privilege")
-	defer stmtOut.Close()
 	if err != nil {
 		return nil, err
 	}
@@ -655,12 +654,15 @@ func (self *Cache) RbacNodeToMap() (map[string]*SpStatNode, error) {
 			nMap[node.Node] = node
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		result.Close()
+	}()
 	return nMap, nil
 }
 
 func (self *Cache) RbacMenuToSlice() ([]*SpStatMenu, error) {
 	stmtOut, err := self.db.Prepare("SELECT id, title, name FROM sp_menu_template")
-	defer stmtOut.Close()
 	if err != nil {
 		return nil, err
 	}
@@ -678,6 +680,10 @@ func (self *Cache) RbacMenuToSlice() ([]*SpStatMenu, error) {
 			ms = append(ms, menu)
 		}
 	}
+	defer func(){
+		stmtOut.Close()
+		result.Close()
+	}()
 	return ms, nil
 }
 
