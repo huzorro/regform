@@ -143,10 +143,7 @@ func (self *Cache) SetSpInfo() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		stmtOut.Close()
-		self.pool.Close(rc)
-	}()
+
 	rows, err := stmtOut.Query()
 	if err != nil {
 		return err
@@ -164,6 +161,11 @@ func (self *Cache) SetSpInfo() error {
 			return err
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		rows.Close()
+		self.pool.Close(rc)
+	}()
 	return nil
 }
 
@@ -176,10 +178,7 @@ func (self *Cache) SetSpConsign() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		stmtOut.Close()
-		self.pool.Close(rc)
-	}()
+
 	rows, err := stmtOut.Query()
 	if err != nil {
 		return err
@@ -197,6 +196,11 @@ func (self *Cache) SetSpConsign() error {
 			return err
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		rows.Close()
+		self.pool.Close(rc)
+	}()
 	return nil
 
 }
@@ -210,10 +214,6 @@ func (self *Cache) SetSpService() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		stmtOut.Close()
-		self.pool.Close(rc)
-	}()
 
 	rows, err := stmtOut.Query()
 	if err != nil {
@@ -266,6 +266,11 @@ func (self *Cache) SetSpService() error {
 			return err
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		rows.Close()
+		self.pool.Close(rc)
+	}()
 	return nil
 }
 func (self *Cache) SetSpCp() error {
@@ -277,10 +282,7 @@ func (self *Cache) SetSpCp() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		stmtOut.Close()
-		self.pool.Close(rc)
-	}()
+
 	rows, err := stmtOut.Query()
 	if err != nil {
 		return err
@@ -299,6 +301,11 @@ func (self *Cache) SetSpCp() error {
 			return err
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		rows.Close()
+		self.pool.Close(rc)
+	}()
 	return nil
 }
 
@@ -311,10 +318,7 @@ func (self *Cache) SetSpMsisdn() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		stmtOut.Close()
-		self.pool.Close(rc)
-	}()
+
 	rows, err := stmtOut.Query()
 	if err != nil {
 		return err
@@ -334,6 +338,11 @@ func (self *Cache) SetSpMsisdn() error {
 			return err
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		rows.Close()
+		self.pool.Close(rc)
+	}()
 	return nil
 }
 
@@ -346,10 +355,7 @@ func (self *Cache) SetCityToProvince() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		stmtOut.Close()
-		self.pool.Close(rc)
-	}()
+
 	rows, err := stmtOut.Query()
 	if err != nil {
 		return err
@@ -369,6 +375,11 @@ func (self *Cache) SetCityToProvince() error {
 			return err
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		rows.Close()
+		self.pool.Close(rc)
+	}()
 	return nil
 }
 
@@ -381,10 +392,7 @@ func (self *Cache) SetProvince() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		stmtOut.Close()
-		self.pool.Close(rc)
-	}()
+
 	rows, err := stmtOut.Query()
 	if err != nil {
 		return err
@@ -403,6 +411,11 @@ func (self *Cache) SetProvince() error {
 			return err
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		rows.Close()
+		self.pool.Close(rc)
+	}()
 	return nil
 }
 
@@ -415,10 +428,7 @@ func (self *Cache) SetSpSink() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		stmtOut.Close()
-		self.pool.Close(rc)
-	}()
+
 	rows, err := stmtOut.Query()
 	if err != nil {
 		return err
@@ -446,6 +456,11 @@ func (self *Cache) SetSpSink() error {
 			return err
 		}
 	}
+	defer func() {
+		stmtOut.Close()
+		rows.Close()
+		self.pool.Close(rc)
+	}()
 	return nil
 }
 func (self *Cache) UpdateSetByKey(key string, user *SpUser) (rnum int64, err error) {
@@ -680,7 +695,7 @@ func (self *Cache) RbacMenuToSlice() ([]*SpStatMenu, error) {
 			ms = append(ms, menu)
 		}
 	}
-	defer func(){
+	defer func() {
 		stmtOut.Close()
 		result.Close()
 	}()
